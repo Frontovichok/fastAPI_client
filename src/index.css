@@ -1,0 +1,23 @@
+.editable-row .ant-form-item-explain {
+  position: absolute;
+  top: 100%;
+  font-size: 12px;
+}
+.ant-table-thead.ant-table-cell {
+  font-weight: bold;
+  font-size: 1.3rem;
+}
+.ant-table.ant-table-bordered > .ant-table-container {
+  background: rgb(252, 252, 252);
+  box-shadow: 3px 2px 9px 3px #bfbfbf;
+}
+.ant-table-body
+  .ant-table-tbody
+  .ant-table-row.ant-table-row-level-1.editable-row {
+  background: rgb(224, 233, 224);
+}
+
+.container {
+  max-width: 80%;
+  margin: auto;
+}
