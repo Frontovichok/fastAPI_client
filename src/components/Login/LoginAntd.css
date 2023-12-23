@@ -1,0 +1,35 @@
+.loginContainer {
+  max-width: 350px;
+  margin: auto;
+  margin-top: 100px;
+  padding: 2rem;
+  border-radius: 5px;
+  box-shadow: 3px 2px 9px 3px #bfbfbf;
+  background: white;
+}
+/* .ant-col.ant-form-item-control.css-dev-only-do-not-override-n074ry
+  .ant-form-item-control-input
+  .ant-form-item-control-input-content {
+  display: flex;
+  justify-content: space-between;
+} */
+.rememberMeContainer {
+  display: flex;
+  justify-content: space-between;
+  align-items: baseline;
+}
+.loginButtonContainer {
+  display: flex;
+  justify-content: space-between;
+  align-items: baseline;
+}
+
+.ant-typography.loginHeaderText {
+  text-align: center;
+  margin-top: 24px;
+  margin-bottom: 40px;
+}
+:where(.css-dev-only-do-not-override-n074ry).ant-input-affix-wrapper
+  .ant-input-prefix {
+  margin-inline-end: 10px;
+}

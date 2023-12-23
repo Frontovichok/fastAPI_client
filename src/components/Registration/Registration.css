@@ -1,0 +1,23 @@
+.registrationContainer {
+  max-width: 550px;
+  margin: auto;
+  margin-top: 100px;
+  padding: 2rem;
+  border-radius: 5px;
+  box-shadow: 3px 2px 9px 3px #bfbfbf;
+  background: white;
+}
+:where(.css-dev-only-do-not-override-y8x9xp).ant-form-item
+  .ant-form-item-label {
+  text-align: left;
+}
+.ant-typography.registrationHeaderText {
+  text-align: center;
+  margin-top: 24px;
+  margin-bottom: 40px;
+}
+.RegistrationButtonContainer {
+  display: flex;
+  justify-content: space-between;
+  align-items: baseline;
+}

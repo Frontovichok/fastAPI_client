@@ -456,7 +456,7 @@ const App: React.FC = () => {
     {
       title: "Действие",
       dataIndex: "operation",
-      width: 150,
+      width: 200,
       fixed: "right" as "right",
       render: (_: any, record: Item) => {
         const editable = isEditing(record);
@@ -468,10 +468,15 @@ const App: React.FC = () => {
                   onClick={() => save(record.key)}
                   style={{ marginRight: 8 }}
                 >
-                  Save
+                  Сохранить
                 </Typography.Link>
-                <Popconfirm title="Sure to cancel?" onConfirm={cancel}>
-                  <a>Cancel</a>
+                <Popconfirm
+                  title="Подтверждаете отмену?"
+                  onConfirm={cancel}
+                  okText="Да"
+                  cancelText="Отмена"
+                >
+                  <a>Отменить</a>
                 </Popconfirm>
               </span>
             ) : (
@@ -479,15 +484,17 @@ const App: React.FC = () => {
                 disabled={editingKey !== ""}
                 onClick={() => edit(record)}
               >
-                Edit
+                Изменить
               </Typography.Link>
             )}
-            <span> </span>
+            <p> </p>
             <Popconfirm
-              title="Sure to delete?"
+              title="Подтверждаете удаление?"
               onConfirm={() => handleDelete(record.key)}
+              okText="Да"
+              cancelText="Отмена"
             >
-              <a>Delete</a>
+              <a>Удалить</a>
             </Popconfirm>
           </>
         );

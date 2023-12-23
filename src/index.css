@@ -1,3 +1,7 @@
+body {
+  background: #fbfbfb;
+}
+
 .editable-row .ant-form-item-explain {
   position: absolute;
   top: 100%;
@@ -21,3 +25,5 @@
   max-width: 80%;
   margin: auto;
 }
+
+
