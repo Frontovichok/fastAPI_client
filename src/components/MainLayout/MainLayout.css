@@ -1,0 +1,41 @@
+.ant-layout .ant-layout-header.mainLayoutHeader {
+  display: flex;
+  justify-content: space-between;
+  padding: 0 80px;
+  z-index: 1;
+  border-bottom: 1px solid #28538f;
+}
+.ant-layout {
+  height: 100%;
+}
+.ant-layout-sider.ant-layout-sider-dark.ant-layout-sider-has-trigger
+  .ant-layout-sider-children {
+  padding: 10px 5px 0px;
+}
+.headerLeftButtons {
+  display: flex;
+  justify-self: left;
+  flex-direction: row;
+  justify-content: end;
+  align-items: center;
+  gap: 25px;
+}
+.headerRightButtons {
+  display: flex;
+  flex-direction: row;
+  justify-content: end;
+  align-items: center;
+  gap: 25px;
+}
+.headerLogoContainer {
+  height: 100%;
+  padding: 5px;
+}
+.headerLogo {
+  max-height: 100%;
+  width: auto;
+  border-radius: 5px;
+}
+.ant-avatar.ant-avatar-square {
+  background: none;
+}

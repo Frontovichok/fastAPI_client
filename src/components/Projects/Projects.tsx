@@ -1,6 +1,8 @@
 import React, { useRef, useState } from "react";
 import "../../index.css";
-import { SearchOutlined, SyncOutlined } from "@ant-design/icons";
+import "./Projects.css";
+import { cloneDeep } from "lodash";
+import { PlusOutlined, SearchOutlined, SyncOutlined } from "@ant-design/icons";
 import {
   ConfigProvider,
   Form,
@@ -23,6 +25,7 @@ import type { InputRef } from "antd";
 import { Link } from "react-router-dom";
 import type { FilterConfirmProps } from "antd/es/table/interface";
 import Highlighter from "react-highlight-words";
+import Title from "antd/es/typography/Title";
 
 interface Item {
   key: string;
@@ -47,7 +50,7 @@ interface Item {
 type ItemIndex = keyof Item;
 
 const originData: Item[] = [];
-for (let i = 0; i < 19; i++) {
+for (let i = 0; i < 11; i++) {
   originData.push({
     key: i.toString(),
     name: `Project ${i}`,
@@ -69,8 +72,8 @@ for (let i = 0; i < 19; i++) {
     children: [
       {
         key: `${i}.${i}`,
-        name: `Project 2.1`,
-        sertificationType: "Мин обороны",
+        name: `Project ${i}.${i}`,
+        sertificationType: "Мин обороныыыы",
         address: `Москва, ул. Фрунзенская, д. 2.1`,
         company: "ИнфоТеКс",
         trustLevel: "НДВ:2 НСД:2А",
@@ -85,6 +88,27 @@ for (let i = 0; i < 19; i++) {
         mainComponentID: "1",
         subComponentsID: "-",
         description: `My name is John Brown, I am 2.12 years old, living in New York No. 2.1 Lake Park.`,
+        children: [
+          {
+            key: `${i}.${i}.${i}`,
+            name: `Project ${i}.${i}.${i}`,
+            sertificationType: "Мин обороныыыы",
+            address: `Москва, ул. Фрунзенская, д. 2.1`,
+            company: "ИнфоТеКс",
+            trustLevel: "НДВ:2 НСД:2А",
+            decision: `№2.1 от 100.100.2010`,
+            experts: "Курбанов, Алексеев",
+            priority: `${Math.floor(Math.random() * 5)}`,
+            sourceDirectory: "D:/Заказчики...",
+            distribDirectory: "D:/Заказчики...",
+            documentationDirectory: "D:/Заказчики...",
+            status: "В работе, формирование АО",
+            reportsDirectory: "D:/Заказчики...",
+            mainComponentID: "1",
+            subComponentsID: "-",
+            description: `My name is John Brown, I am 2.12 years old, living in New York No. 2.1 Lake Park.`,
+          },
+        ],
       },
     ],
   });
@@ -110,27 +134,25 @@ originData.push({
   description: `My name is John Brown, I am 2222 years old, living in New York No. 222 Lake Park.`,
 });
 
-// originData[1].children = [
-//   {
-//     key: "2.1",
-//     name: `Project 2.1`,
-//     sertificationType: "Мин Обороны",
-//     address: `Москва, ул. Фрунзенская, д. 2.1`,
-//     company: "ИнфоТеКс",
-//     trustLevel: "НДВ:2 НСД:2А",
-//     decision: `№2.1 от 100.100.2010`,
-//     experts: "Курбанов, Алексеев",
-//     priority: "5/5",
-//     sourceDirectory: "D:/Заказчики...",
-//     distribDirectory: "D:/Заказчики...",
-//     documentationDirectory: "D:/Заказчики...",
-//     status: "В работе, формирование АО",
-//     reportsDirectory: "D:/Заказчики...",
-//     mainComponentID: "1",
-//     subComponentsID: "-",
-//     description: `My name is John Brown, I am 2.12 years old, living in New York No. 2.1 Lake Park.`,
-//   },
-// ];
+originData[0].children?.push({
+  key: "0.1",
+  name: `Project 222`,
+  sertificationType: "ФСТЭК",
+  address: `Москва, ул. Фрунзенская, д. 222`,
+  company: "ИнфоТеКс",
+  trustLevel: "НДВ:2 НСД:2А",
+  decision: `№222 от 100.100.2010`,
+  experts: "Курбанов, Алексеев",
+  priority: `${Math.floor(Math.random() * 5)}`,
+  sourceDirectory: "D:/Заказчики...",
+  distribDirectory: "D:/Заказчики...",
+  documentationDirectory: "D:/Заказчики...",
+  status: "В работе, формирование АО",
+  reportsDirectory: "D:/Заказчики...",
+  mainComponentID: "1",
+  subComponentsID: "-",
+  description: `My name is John Brown, I am 2222 years old, living in New York No. 222 Lake Park.`,
+});
 
 interface EditableCellProps extends React.HTMLAttributes<HTMLElement> {
   editing: boolean;
@@ -187,7 +209,8 @@ const App: React.FC = () => {
   const isEditing = (record: Item) => record.key === editingKey;
 
   const edit = (record: Partial<Item> & { key: React.Key }) => {
-    form.setFieldsValue({ id: "", name: "", age: "", address: "", ...record });
+    // console.log("record:::: ", record);
+    form.setFieldsValue({ ...record });
     setEditingKey(record.key);
   };
 
@@ -195,30 +218,84 @@ const App: React.FC = () => {
     setEditingKey("");
   };
 
+  const filterDataTest = (data: Item[], key: React.Key) => {
+    const newDataTest = cloneDeep(data).filter((item) => item.key !== key);
+    newDataTest.forEach((item, i) => {
+      if (item.children) {
+        item.children = filterDataTest([...item.children], key);
+      }
+      if (item.children?.length === 0) {
+        delete item.children;
+      }
+    });
+    return newDataTest;
+  };
+
   const handleDelete = (key: React.Key) => {
-    const newData = data.filter((item) => item.key !== key);
-    setData(newData);
+    console.log("data: ", data);
+    console.log("key: ", key);
+
+    const newDataTest = filterDataTest([...data], key);
+
+    console.log("--newDataTest is--: ", newDataTest);
+
+    // const newData = data.filter((item) => item.key !== key);
+    // setData(newData);
+    setData(newDataTest);
+  };
+
+  const saveChangesTest = (data: Item[], key: React.Key, row: Item) => {
+    // const row = (await form.validateFields()) as Item;
+
+    const newData = cloneDeep(data);
+    const index = newData.findIndex((item) => key === item.key);
+    if (index > -1) {
+      const item = newData[index];
+      newData.splice(index, 1, { ...item, ...row });
+      // return newData;
+    }
+    // else {
+    //   newData.push(row);
+    // }
+
+    newData.forEach((item) => {
+      if (item.children) {
+        item.children = saveChangesTest([...item.children], key, row);
+      }
+    });
+
+    return newData;
   };
 
   const save = async (key: React.Key) => {
     try {
+      // пока не понял что это
       const row = (await form.validateFields()) as Item;
 
+      //-----
       const newData = [...data];
-      const index = newData.findIndex((item) => key === item.key);
-      if (index > -1) {
-        const item = newData[index];
-        newData.splice(index, 1, {
-          ...item,
-          ...row,
-        });
-        setData(newData);
-        setEditingKey("");
-      } else {
-        newData.push(row);
-        setData(newData);
-        setEditingKey("");
-      }
+
+      let newData2 = cloneDeep(newData);
+      console.log("====================before: ", newData2);
+      newData2 = saveChangesTest(newData2, key, row);
+      console.log("after: ", newData2);
+
+      // const index = newData.findIndex((item) => key === item.key);
+      // if (index > -1) {
+      //   const item = newData[index];
+      //   newData.splice(index, 1, {
+      //     ...item,
+      //     ...row,
+      //   });
+      setData(newData2);
+      //-----
+
+      setEditingKey("");
+      // } else {
+      //   newData.push(row);
+      //   setData(newData);
+      // setEditingKey("");
+      // }
     } catch (errInfo) {
       console.log("Validate Failed:", errInfo);
     }
@@ -266,8 +343,8 @@ const App: React.FC = () => {
             onClick={() =>
               handleSearch(selectedKeys as string[], confirm, dataIndex)
             }
-            // icon={<SearchOutlined />}
-            icon={<span>Search</span>}
+            icon={<SearchOutlined />}
+            // icon={<span>Search</span>}
             size="small"
             style={{ width: 90 }}
           >
@@ -303,7 +380,9 @@ const App: React.FC = () => {
         </Space>
       </div>
     ),
-    filterIcon: (filtered: boolean) => <span>Search</span>,
+    filterIcon: (filtered: boolean) => (
+      <SearchOutlined style={{ color: filtered ? "#1677ff" : undefined }} />
+    ),
     onFilter: (value: any, record: any) =>
       record[dataIndex]
         .toString()
@@ -329,9 +408,9 @@ const App: React.FC = () => {
 
   const columns = [
     {
-      title: "id",
+      title: "№",
       dataIndex: "key",
-      width: 100,
+      width: 150,
       editable: false,
       fixed: "left" as "left",
       sorter: (a: any, b: any) => a.key - b.key,
@@ -350,7 +429,7 @@ const App: React.FC = () => {
     {
       title: "Тип сертификации",
       dataIndex: "sertificationType",
-      width: 150,
+      width: 200,
       editable: true,
       onFilter: (value: any, record: Item) =>
         record.sertificationType.startsWith(value),
@@ -370,17 +449,17 @@ const App: React.FC = () => {
     {
       title: "Компания",
       dataIndex: "company",
-      width: 150,
+      width: 200,
       editable: true,
       ...getColumnSearchProps("company"),
     },
     {
       title: "Приоритет",
       dataIndex: "priority",
-      width: 200,
+      width: 220,
       editable: true,
       render: (text: string, index: any, record: number) => (
-        <Rate defaultValue={parseInt(text)} disabled />
+        <Rate defaultValue={parseInt(text)} character="🥑" disabled />
       ),
     },
 
@@ -520,13 +599,16 @@ const App: React.FC = () => {
     if ("editable" in col) {
       return {
         ...col,
-        onCell: (record: Item) => ({
-          record,
-          inputType: col["dataIndex"] === "age" ? "number" : "text",
-          dataIndex: col["dataIndex"],
-          title: col.title,
-          editing: isEditing(record),
-        }),
+        onCell: (record: Item) => {
+          console.log("record: ", record);
+          return {
+            record,
+            inputType: "text",
+            dataIndex: col["dataIndex"],
+            title: col.title,
+            editing: isEditing(record),
+          };
+        },
       };
     }
     return col;
@@ -534,11 +616,18 @@ const App: React.FC = () => {
 
   return (
     <>
+      <Title level={2} className="projectsHeaderText">
+        Активные проекты
+      </Title>
+      <Button className="newProject" type="primary" icon={<PlusOutlined />}>
+        Создать проект
+      </Button>
       <ConfigProvider
         theme={{
           components: {
             Table: {
-              headerBg: "rgb(173 221 197)",
+              headerBg: "rgb(18 58 94)",
+              headerColor: "white",
               // rowExpandedBg: "rgb(173 221 197)",
               // borderColor: "black",
             },

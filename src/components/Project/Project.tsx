@@ -31,7 +31,7 @@ interface Item {
 }
 
 const originData: Item[] = [];
-for (let i = 0; i < 19; i++) {
+for (let i = 0; i < 1; i++) {
   originData.push({
     key: i.toString(),
     name: `Project11 ${i}`,

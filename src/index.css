@@ -1,5 +1,6 @@
 body {
   background: #fbfbfb;
+  margin: 0;
 }
 
 .editable-row .ant-form-item-explain {
@@ -13,17 +14,52 @@ body {
 }
 .ant-table.ant-table-bordered > .ant-table-container {
   background: rgb(252, 252, 252);
-  box-shadow: 3px 2px 9px 3px #bfbfbf;
+  box-shadow: 3px 2px 15px 3px #bfbfbf;
 }
+
 .ant-table-body
   .ant-table-tbody
   .ant-table-row.ant-table-row-level-1.editable-row {
-  background: rgb(224, 233, 224);
+  background: rgb(245, 245, 245);
+}
+
+.ant-table-body
+  .ant-table-tbody
+  .ant-table-row.ant-table-row-level-2.editable-row {
+  background: rgb(238, 238, 238);
+}
+
+/* hover */
+
+.ant-table-body
+  .ant-table-tbody
+  .ant-table-row.editable-row.ant-table-row-level-0
+  .ant-table-cell-row-hover {
+  background: rgb(233, 242, 253);
+}
+.ant-table-body
+  .ant-table-tbody
+  .ant-table-row.editable-row.ant-table-row-level-1
+  .ant-table-cell-row-hover {
+  background: rgb(233, 242, 253);
+}
+.ant-table-body
+  .ant-table-tbody
+  .ant-table-row.editable-row.ant-table-row-level-2
+  .ant-table-cell-row-hover {
+  background: rgb(233, 242, 253);
+}
+
+/* hover */
+
+td.ant-table-cell.ant-table-cell-fix-left.ant-table-cell-fix-left-last {
+  box-shadow: 5px 5px 10px 1px #e7e7e7;
+}
+td.ant-table-cell.ant-table-cell-fix-right.ant-table-cell-fix-right-first {
+  box-shadow: -5px 5px 10px 1px #e7e7e7;
 }
 
 .container {
   max-width: 80%;
   margin: auto;
 }
-
-
