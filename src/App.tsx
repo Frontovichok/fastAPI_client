@@ -17,6 +17,7 @@ import Task from "./components/Task";
 import Login from "./components/Login/Login";
 import LoginAntd from "./components/Login/LoginAntd";
 import RegisterAntd from "./components/Registration/Registration";
+import NewProject from "./components/Projects/NewProject/NewProject";
 
 const router = createBrowserRouter([
   {

@@ -22,6 +22,7 @@ import { Avatar, Badge, Breadcrumb, Layout, Menu, theme } from "antd";
 import { Link, NavLink, Route, Routes } from "react-router-dom";
 import Projects from "../Projects/Projects";
 import Project from "../Project/Project";
+import NewProject from "../Projects/NewProject/NewProject";
 const { Header, Content, Sider } = Layout;
 
 // const items1: MenuProps["items"] = ["1", "2", "3"].map((key) => ({
@@ -183,6 +184,8 @@ const MainLayout: React.FC = () => {
           >
             <Routes>
               <Route path="/" element={<Projects />} />
+              <Route path="/projects" element={<Projects />} />
+              <Route path="/new_project" element={<NewProject />} />
               <Route path="/project/:projectId" element={<Project />} />
             </Routes>
           </Content>

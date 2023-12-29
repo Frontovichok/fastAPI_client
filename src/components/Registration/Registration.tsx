@@ -80,7 +80,8 @@ const Registration: React.FC = () => {
       >
         <Form.Item
           name="email"
-          label="E-mail"
+          label="Почта"
+          tooltip="@iifmail.ru"
           rules={[
             {
               type: "email",
@@ -135,7 +136,6 @@ const Registration: React.FC = () => {
         <Form.Item
           name="nickname"
           label="ФИО"
-          tooltip="What do you want others to call you?"
           rules={[
             {
               required: true,

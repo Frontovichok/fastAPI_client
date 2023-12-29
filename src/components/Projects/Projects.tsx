@@ -22,7 +22,7 @@ import type {
   TableProps,
 } from "antd/es/table";
 import type { InputRef } from "antd";
-import { Link } from "react-router-dom";
+import { Link, NavLink } from "react-router-dom";
 import type { FilterConfirmProps } from "antd/es/table/interface";
 import Highlighter from "react-highlight-words";
 import Title from "antd/es/typography/Title";
@@ -619,9 +619,11 @@ const App: React.FC = () => {
       <Title level={2} className="projectsHeaderText">
         Активные проекты
       </Title>
-      <Button className="newProject" type="primary" icon={<PlusOutlined />}>
-        Создать проект
-      </Button>
+      <NavLink to="/new_project">
+        <Button className="newProject" type="primary" icon={<PlusOutlined />}>
+          Создать проект
+        </Button>
+      </NavLink>
       <ConfigProvider
         theme={{
           components: {
