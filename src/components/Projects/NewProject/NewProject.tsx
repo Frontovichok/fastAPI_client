@@ -11,6 +11,7 @@ import {
   Form,
   Input,
   InputNumber,
+  Rate,
   Row,
   Select,
 } from "antd";
@@ -122,7 +123,7 @@ const NewProject: React.FC = () => {
       style={{ maxWidth: 600 }}
       scrollToFirstError
     >
-      <Form.Item
+      {/* <Form.Item
         name="email"
         label="Почта"
         rules={[
@@ -137,7 +138,7 @@ const NewProject: React.FC = () => {
         ]}
       >
         <Input />
-      </Form.Item>
+      </Form.Item> */}
 
       <Form.Item
         name="name"
@@ -150,7 +151,7 @@ const NewProject: React.FC = () => {
           },
         ]}
       >
-        <Input />
+        <Input placeholder="Новый проект" />
       </Form.Item>
 
       <Form.Item
@@ -164,7 +165,11 @@ const NewProject: React.FC = () => {
           },
         ]}
       >
-        <Input />
+        <Select placeholder="выберите тип сертификации">
+          <Option value="min_oborony">Министерство обороны</Option>
+          <Option value="FSTEK">ФСТЭК</Option>
+          <Option value="fsb">ФСБ</Option>
+        </Select>
       </Form.Item>
 
       <Form.Item
@@ -178,7 +183,7 @@ const NewProject: React.FC = () => {
           },
         ]}
       >
-        <Input />
+        <Input placeholder="ООО ДААА" />
       </Form.Item>
 
       <Form.Item
@@ -192,7 +197,7 @@ const NewProject: React.FC = () => {
           },
         ]}
       >
-        <Input />
+        <Rate defaultValue={2} character="🥑" />
       </Form.Item>
 
       <Form.Item
@@ -230,11 +235,22 @@ const NewProject: React.FC = () => {
           {
             required: true,
             message: "Пожалуйста, введите задействованных экспертов!",
-            whitespace: true,
           },
         ]}
       >
-        <Input />
+        <Select
+          mode="tags"
+          style={{ width: "100%" }}
+          placeholder="Задействованные эксперты"
+          //   onChange={handleChange}
+          options={[
+            { value: "Kurbanov", label: "Курбанов М.Н." },
+            { value: "Evdokimova", label: "Евдокимова К.Л." },
+            { value: "Kharchenko", label: "Харченко А.С." },
+            { value: "Proshina", label: "Прошина А.О." },
+            { value: "Alekseev", label: "Алексеев Е. С." },
+          ]}
+        />
       </Form.Item>
 
       <Form.Item
