@@ -1,7 +1,8 @@
 import React, { useRef, useState } from "react";
 import "../../index.css";
 import "./Projects.css";
-import { cloneDeep } from "lodash";
+import { cloneDeep, find } from "lodash";
+import * as _ from "lodash";
 import { PlusOutlined, SearchOutlined, SyncOutlined } from "@ant-design/icons";
 import {
   ConfigProvider,
@@ -14,6 +15,7 @@ import {
   Typography,
   Button,
   Space,
+  Tag,
 } from "antd";
 import type {
   ColumnType,
@@ -40,7 +42,7 @@ interface Item {
   sourceDirectory: string;
   distribDirectory: string;
   documentationDirectory: string;
-  status: string;
+  status: string[];
   reportsDirectory: string;
   mainComponentID: string;
   subComponentsID: string;
@@ -53,18 +55,18 @@ const originData: Item[] = [];
 for (let i = 0; i < 11; i++) {
   originData.push({
     key: i.toString(),
-    name: `Project ${i}`,
+    name: `Проект ${i}`,
     sertificationType: "Мин обороны",
     address: `Москва, ул. Фрунзенская, д. ${i}`,
-    company: "ИнфоТеКс",
+    company: "ИнфоСеКс",
     trustLevel: "НДВ:2 НСД:2А",
     decision: `№${i} от 100.100.2010`,
     experts: "Курбанов, Алексеев",
-    priority: `${Math.floor(Math.random() * 5)}`,
+    priority: `${Math.floor(Math.random() * 6)}`,
     sourceDirectory: "D:/Заказчики...",
     distribDirectory: "D:/Заказчики...",
     documentationDirectory: "D:/Заказчики...",
-    status: "В работе, формирование АО",
+    status: ["В работе", "Формирование АО"],
     reportsDirectory: "D:/Заказчики...",
     mainComponentID: "1",
     subComponentsID: "-",
@@ -72,18 +74,18 @@ for (let i = 0; i < 11; i++) {
     children: [
       {
         key: `${i}.${i}`,
-        name: `Project ${i}.${i}`,
+        name: `Проект ${i}.${i}`,
         sertificationType: "Мин обороныыыы",
         address: `Москва, ул. Фрунзенская, д. 2.1`,
         company: "ИнфоТеКс",
         trustLevel: "НДВ:2 НСД:2А",
         decision: `№2.1 от 100.100.2010`,
         experts: "Курбанов, Алексеев",
-        priority: `${Math.floor(Math.random() * 5)}`,
+        priority: `${Math.floor(Math.random() * 6)}`,
         sourceDirectory: "D:/Заказчики...",
         distribDirectory: "D:/Заказчики...",
         documentationDirectory: "D:/Заказчики...",
-        status: "В работе, формирование АО",
+        status: ["В работе", "Формирование АО"],
         reportsDirectory: "D:/Заказчики...",
         mainComponentID: "1",
         subComponentsID: "-",
@@ -91,18 +93,18 @@ for (let i = 0; i < 11; i++) {
         children: [
           {
             key: `${i}.${i}.${i}`,
-            name: `Project ${i}.${i}.${i}`,
+            name: `Проект ${i}.${i}.${i}`,
             sertificationType: "Мин обороныыыы",
             address: `Москва, ул. Фрунзенская, д. 2.1`,
             company: "ИнфоТеКс",
             trustLevel: "НДВ:2 НСД:2А",
             decision: `№2.1 от 100.100.2010`,
             experts: "Курбанов, Алексеев",
-            priority: `${Math.floor(Math.random() * 5)}`,
+            priority: `${Math.floor(Math.random() * 6)}`,
             sourceDirectory: "D:/Заказчики...",
             distribDirectory: "D:/Заказчики...",
             documentationDirectory: "D:/Заказчики...",
-            status: "В работе, формирование АО",
+            status: ["В работе", "Формирование АО"],
             reportsDirectory: "D:/Заказчики...",
             mainComponentID: "1",
             subComponentsID: "-",
@@ -116,10 +118,10 @@ for (let i = 0; i < 11; i++) {
 
 originData.push({
   key: "222",
-  name: `Project 222`,
+  name: `Проект 222`,
   sertificationType: "ФСТЭК",
   address: `Москва, ул. Фрунзенская, д. 222`,
-  company: "ИнфоТеКс",
+  company: "ИнфоКеКс",
   trustLevel: "НДВ:2 НСД:2А",
   decision: `№222 от 100.100.2010`,
   experts: "Курбанов, Алексеев",
@@ -127,7 +129,7 @@ originData.push({
   sourceDirectory: "D:/Заказчики...",
   distribDirectory: "D:/Заказчики...",
   documentationDirectory: "D:/Заказчики...",
-  status: "В работе, формирование АО",
+  status: ["В работе", "Формирование АО"],
   reportsDirectory: "D:/Заказчики...",
   mainComponentID: "1",
   subComponentsID: "-",
@@ -139,15 +141,15 @@ originData[0].children?.push({
   name: `Project 222`,
   sertificationType: "ФСТЭК",
   address: `Москва, ул. Фрунзенская, д. 222`,
-  company: "ИнфоТеКс",
-  trustLevel: "НДВ:2 НСД:2А",
+  company: "ИнфоЗеКс",
+  trustLevel: "ВДВ:2 ЖДВ:2А",
   decision: `№222 от 100.100.2010`,
   experts: "Курбанов, Алексеев",
   priority: `${Math.floor(Math.random() * 5)}`,
   sourceDirectory: "D:/Заказчики...",
   distribDirectory: "D:/Заказчики...",
   documentationDirectory: "D:/Заказчики...",
-  status: "В работе, формирование АО",
+  status: ["В работе", "Формирование АО"],
   reportsDirectory: "D:/Заказчики...",
   mainComponentID: "1",
   subComponentsID: "-",
@@ -209,7 +211,7 @@ const App: React.FC = () => {
   const isEditing = (record: Item) => record.key === editingKey;
 
   const edit = (record: Partial<Item> & { key: React.Key }) => {
-    // console.log("record:::: ", record);
+    console.log("record:::: ", record);
     form.setFieldsValue({ ...record });
     setEditingKey(record.key);
   };
@@ -251,6 +253,14 @@ const App: React.FC = () => {
     const index = newData.findIndex((item) => key === item.key);
     if (index > -1) {
       const item = newData[index];
+      console.log("+++++++++row.status: ", row.status);
+      console.log("typeof row.status: ", typeof row.status);
+
+      // let status = row.status;
+      if (typeof row.status === "string") {
+        row.status = String(row.status).split(",");
+      }
+      // row.status = "1,2,3".split(",");
       newData.splice(index, 1, { ...item, ...row });
       // return newData;
     }
@@ -258,6 +268,7 @@ const App: React.FC = () => {
     //   newData.push(row);
     // }
 
+    // изменяем подпроект (если есть свойство children)
     newData.forEach((item) => {
       if (item.children) {
         item.children = saveChangesTest([...item.children], key, row);
@@ -306,6 +317,7 @@ const App: React.FC = () => {
     confirm: (param?: FilterConfirmProps) => void,
     dataIndex: ItemIndex
   ) => {
+    console.log("selectedKeys: ", selectedKeys);
     confirm();
     setSearchText(selectedKeys[0]);
     setSearchedColumn(dataIndex);
@@ -314,6 +326,51 @@ const App: React.FC = () => {
   const handleReset = (clearFilters: () => void) => {
     clearFilters();
     setSearchText("");
+  };
+
+  const searchTest = (value: any, record: any, dataIndex: ItemIndex) => {
+    console.log("-----------");
+    console.log("value: ", value);
+    console.log("record: ", record);
+    console.log("dataIndex: ", dataIndex);
+    console.log("record[dataIndex]: ", record[dataIndex]);
+    console.log("-----------");
+
+    let isIncludes = record[dataIndex]
+      .toString()
+      .toLowerCase()
+      .includes((value as string).toLowerCase());
+    let isSubIncludes = false;
+
+    if (!isIncludes && record.children && record.children.length > 0) {
+      // console.log("record.children: ", record.children);
+      isSubIncludes = record.children.find((subRecord: any) => {
+        // console.log("subRecord[dataIndex]: ", subRecord[dataIndex]);
+        // console.log("value: ", value);
+
+        // let isSubRecordInclude = subRecord[dataIndex]
+        //   .toString()
+        //   .toLowerCase()
+        //   .includes((value as string).toLowerCase());
+
+        let isSubRecordInclude = searchTest(value, subRecord, dataIndex);
+
+        // console.log("isSubRecordUnclude: ", isSubRecordUnclude);
+
+        // let lodashFind = _.find(record, (location) =>
+        //   location[dataIndex]
+        //     .toString()
+        //     .toLowerCase()
+
+        //     .includes((value as string).toLowerCase())
+        // );
+
+        // console.log("lodashFind: ", lodashFind);
+
+        return isSubRecordInclude;
+      });
+    }
+    return isIncludes || isSubIncludes;
   };
 
   const getColumnSearchProps = (dataIndex: ItemIndex): ColumnType<Item> => ({
@@ -327,7 +384,7 @@ const App: React.FC = () => {
       <div style={{ padding: 8 }} onKeyDown={(e) => e.stopPropagation()}>
         <Input
           ref={searchInput}
-          placeholder={`Search ${dataIndex}`}
+          placeholder={`Поиск`}
           value={selectedKeys[0]}
           onChange={(e) =>
             setSelectedKeys(e.target.value ? [e.target.value] : [])
@@ -348,16 +405,16 @@ const App: React.FC = () => {
             size="small"
             style={{ width: 90 }}
           >
-            Search
+            Найти
           </Button>
           <Button
             onClick={() => clearFilters && handleReset(clearFilters)}
             size="small"
             style={{ width: 90 }}
           >
-            Reset
+            Сбросить
           </Button>
-          <Button
+          {/* <Button
             type="link"
             size="small"
             onClick={() => {
@@ -366,8 +423,8 @@ const App: React.FC = () => {
               setSearchedColumn(dataIndex);
             }}
           >
-            Filter
-          </Button>
+            Фильтр
+          </Button> */}
           <Button
             type="link"
             size="small"
@@ -375,19 +432,18 @@ const App: React.FC = () => {
               close();
             }}
           >
-            close
+            Закрыть
           </Button>
         </Space>
       </div>
     ),
     filterIcon: (filtered: boolean) => (
-      <SearchOutlined style={{ color: filtered ? "#1677ff" : undefined }} />
+      <SearchOutlined style={{ color: filtered ? "yellow" : "white" }} />
     ),
-    onFilter: (value: any, record: any) =>
-      record[dataIndex]
-        .toString()
-        .toLowerCase()
-        .includes((value as string).toLowerCase()),
+    onFilter: (value: any, record: any) => {
+      let isIncludes = searchTest(value, record, dataIndex);
+      return isIncludes;
+    },
     onFilterDropdownOpenChange: (visible: any) => {
       if (visible) {
         setTimeout(() => searchInput.current?.select(), 100);
@@ -420,6 +476,7 @@ const App: React.FC = () => {
       dataIndex: "name",
       width: 200,
       editable: true,
+      ...getColumnSearchProps("name"),
       fixed: "left" as "left",
       render: (text: string, index: any, record: number) => (
         <Link to={`/project/${record}`}>{text}</Link>
@@ -431,9 +488,12 @@ const App: React.FC = () => {
       dataIndex: "sertificationType",
       width: 200,
       editable: true,
-      onFilter: (value: any, record: Item) =>
-        record.sertificationType.startsWith(value),
-      filterSearch: true,
+      onFilter: (value: any, record: Item) => {
+        let isIncludes = searchTest(value, record, "sertificationType");
+        return isIncludes;
+        // return record.sertificationType.startsWith(value);
+      },
+      // filterSearch: true,
       filters: [
         {
           text: "ФСТЭК",
@@ -443,9 +503,23 @@ const App: React.FC = () => {
           text: "Мин обороны",
           value: "Мин обороны",
         },
+        {
+          text: "ФСБ",
+          value: "ФСБ",
+        },
       ],
     },
-
+    {
+      title: "Состояние",
+      dataIndex: "status",
+      width: 250,
+      editable: true,
+      // render: (text: string, index: any, record: number) => (
+      //   <Tag color="cyan">{text}</Tag>
+      // ),
+      render: (texts: string[]) =>
+        texts.map((text) => <Tag color="cyan">{text}</Tag>),
+    },
     {
       title: "Компания",
       dataIndex: "company",
@@ -458,6 +532,38 @@ const App: React.FC = () => {
       dataIndex: "priority",
       width: 220,
       editable: true,
+      onFilter: (value: any, record: Item) => {
+        let isIncludes = searchTest(value, record, "priority");
+        return isIncludes;
+        // return record.sertificationType.startsWith(value);
+      },
+      // filterSearch: true,
+      filters: [
+        {
+          text: "5",
+          value: "5",
+        },
+        {
+          text: "4",
+          value: "4",
+        },
+        {
+          text: "3",
+          value: "3",
+        },
+        {
+          text: "2",
+          value: "2",
+        },
+        {
+          text: "1",
+          value: "1",
+        },
+        {
+          text: "0",
+          value: "0",
+        },
+      ],
       render: (text: string, index: any, record: number) => (
         <Rate defaultValue={parseInt(text)} character="🥑" disabled />
       ),
@@ -476,6 +582,7 @@ const App: React.FC = () => {
       dataIndex: "decision",
       width: 150,
       editable: true,
+      ...getColumnSearchProps("decision"),
     },
     {
       title: "Эксперты",
@@ -509,12 +616,6 @@ const App: React.FC = () => {
       editable: true,
     },
     {
-      title: "Состояние",
-      dataIndex: "status",
-      width: 250,
-      editable: true,
-    },
-    {
       title: "Отчеты",
       dataIndex: "reportsDirectory",
       width: 150,
@@ -523,12 +624,6 @@ const App: React.FC = () => {
     {
       title: "Главный компонент",
       dataIndex: "mainComponentID",
-      width: 150,
-      editable: true,
-    },
-    {
-      title: "Подкомпонент",
-      dataIndex: "subComponentsID",
       width: 150,
       editable: true,
     },
@@ -567,14 +662,24 @@ const App: React.FC = () => {
               </Typography.Link>
             )}
             <p> </p>
-            <Popconfirm
-              title="Подтверждаете удаление?"
-              onConfirm={() => handleDelete(record.key)}
-              okText="Да"
-              cancelText="Отмена"
-            >
-              <a>Удалить</a>
-            </Popconfirm>
+            <Space>
+              <Popconfirm
+                title="Подтверждаете перемещение в архив?"
+                // onConfirm={() => handleDelete(record.key)}
+                okText="Да"
+                cancelText="Отмена"
+              >
+                <a>В архив</a>
+              </Popconfirm>
+              <Popconfirm
+                title="Подтверждаете удаление?"
+                onConfirm={() => handleDelete(record.key)}
+                okText="Да"
+                cancelText="Отмена"
+              >
+                <a>Удалить</a>
+              </Popconfirm>
+            </Space>
           </>
         );
       },

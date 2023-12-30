@@ -29,7 +29,6 @@
   margin-top: 24px;
   margin-bottom: 40px;
 }
-:where(.css-dev-only-do-not-override-n074ry).ant-input-affix-wrapper
-  .ant-input-prefix {
+.ant-input-affix-wrapper .ant-input-prefix {
   margin-inline-end: 10px;
 }

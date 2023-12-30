@@ -21,3 +21,6 @@
   justify-content: space-between;
   align-items: baseline;
 }
+.ant-input-affix-wrapper .ant-input-prefix {
+  margin-inline-end: 10px;
+}

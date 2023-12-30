@@ -56,14 +56,14 @@ const Registration: React.FC = () => {
     console.log("Received values of form: ", values);
   };
 
-  const suffixSelector = (
-    <Form.Item name="suffix" noStyle>
-      <Select style={{ width: 70 }}>
-        <Option value="USD">$</Option>
-        <Option value="CNY">¥</Option>
-      </Select>
-    </Form.Item>
-  );
+  // const suffixSelector = (
+  //   <Form.Item name="suffix" noStyle>
+  //     <Select style={{ width: 70 }}>
+  //       <Option value="USD">$</Option>
+  //       <Option value="CNY">¥</Option>
+  //     </Select>
+  //   </Form.Item>
+  // );
 
   return (
     <div className="registrationContainer">

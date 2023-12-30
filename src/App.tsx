@@ -18,6 +18,8 @@ import Login from "./components/Login/Login";
 import LoginAntd from "./components/Login/LoginAntd";
 import RegisterAntd from "./components/Registration/Registration";
 import NewProject from "./components/Projects/NewProject/NewProject";
+import { ConfigProvider } from "antd";
+import ruRU from "antd/locale/ru_RU";
 
 const router = createBrowserRouter([
   {
@@ -44,14 +46,16 @@ function App() {
       {/* <RouterProvider router={router} />
        */}
 
-      <BrowserRouter>
-        <Routes>
-          <Route path="/*" element={<MainLayout />} />
-          <Route path="/Login" element={<LoginAntd />} />
-          <Route path="/Register" element={<RegisterAntd />} />
-          <Route path="/task" element={<Task />} />
-        </Routes>
-      </BrowserRouter>
+      <ConfigProvider locale={ruRU}>
+        <BrowserRouter>
+          <Routes>
+            <Route path="/*" element={<MainLayout />} />
+            <Route path="/Login" element={<LoginAntd />} />
+            <Route path="/Register" element={<RegisterAntd />} />
+            <Route path="/task" element={<Task />} />
+          </Routes>
+        </BrowserRouter>
+      </ConfigProvider>
     </React.StrictMode>
   );
 }

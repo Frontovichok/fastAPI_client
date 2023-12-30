@@ -6,3 +6,10 @@
 .newProject {
   margin-bottom: 20px;
 }
+.ant-dropdown-trigger.ant-table-filter-trigger .anticon.anticon-filter {
+  color: white;
+}
+
+.ant-dropdown-trigger.ant-table-filter-trigger.active .anticon.anticon-filter {
+  color: yellow;
+}
