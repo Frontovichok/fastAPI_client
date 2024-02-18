@@ -16,6 +16,7 @@ import {
   Button,
   Space,
   Tag,
+  Tooltip,
 } from "antd";
 import type {
   ColumnType,
@@ -518,7 +519,11 @@ const App: React.FC = () => {
       //   <Tag color="cyan">{text}</Tag>
       // ),
       render: (texts: string[]) =>
-        texts.map((text) => <Tag color="cyan">{text}</Tag>),
+        texts.map((text) => (
+          <Tooltip title={text}>
+            <Tag color="cyan">{text}</Tag>
+          </Tooltip>
+        )),
     },
     {
       title: "Компания",
@@ -558,10 +563,6 @@ const App: React.FC = () => {
         {
           text: "1",
           value: "1",
-        },
-        {
-          text: "0",
-          value: "0",
         },
       ],
       render: (text: string, index: any, record: number) => (
@@ -748,11 +749,12 @@ const App: React.FC = () => {
                 cell: EditableCell,
               },
             }}
-            bordered
+            bordered={false}
             dataSource={data}
             scroll={{ x: "100vw", y: "calc(65vh)" }}
             columns={mergedColumns}
             rowClassName="editable-row"
+            className="custom-scrollbar"
             // expandable={{
             //   expandedRowRender: (record) => (
             //     <p style={{ margin: 0 }}>{record.description}</p>

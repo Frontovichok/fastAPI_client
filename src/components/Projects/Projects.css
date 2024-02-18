@@ -5,6 +5,8 @@
 }
 .newProject {
   margin-bottom: 20px;
+  height: auto;
+  padding: 6px 15px;
 }
 .ant-dropdown-trigger.ant-table-filter-trigger .anticon.anticon-filter {
   color: white;
@@ -12,4 +14,40 @@
 
 .ant-dropdown-trigger.ant-table-filter-trigger.active .anticon.anticon-filter {
   color: yellow;
+}
+.ant-table-row.ant-table-row-level-0.editable-row .ant-table-cell {
+  overflow: hidden;
+}
+.ant-table-row.ant-table-row-level-1.editable-row .ant-table-cell {
+  overflow: hidden;
+}
+.ant-table-row.ant-table-row-level-2.editable-row .ant-table-cell {
+  overflow: hidden;
+}
+.custom-scrollbar .ant-table-body {
+  box-shadow: 0 4px 28px rgba(123, 151, 158, 0.25);
+  border-bottom-left-radius: 8px;
+  border-bottom-right-radius: 8px;
+}
+::-webkit-scrollbar {
+  width: 20px;
+}
+
+::-webkit-scrollbar-track {
+  background-color: transparent;
+  border-radius: 100px;
+}
+
+::-webkit-scrollbar-thumb {
+  background-color: #d6dee1;
+  border-radius: 20px;
+  border: 6px solid transparent;
+  background-clip: content-box;
+}
+
+::-webkit-scrollbar-thumb:hover {
+  background-color: #a8bbbf;
+}
+*::-webkit-scrollbar-corner {
+  background: transparent;
 }

@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import "../../index.css";
 import "./MainLayout.css";
 import {
@@ -19,10 +19,18 @@ import {
 } from "@ant-design/icons";
 import type { MenuProps } from "antd";
 import { Avatar, Badge, Breadcrumb, Layout, Menu, theme } from "antd";
-import { Link, NavLink, Route, Routes } from "react-router-dom";
+import {
+  Link,
+  NavLink,
+  Navigate,
+  Route,
+  Routes,
+  useNavigate,
+} from "react-router-dom";
 import Projects from "../Projects/Projects";
 import Project from "../Project/Project";
 import NewProject from "../Projects/NewProject/NewProject";
+import axios from "axios";
 const { Header, Content, Sider } = Layout;
 
 // const items1: MenuProps["items"] = ["1", "2", "3"].map((key) => ({
@@ -90,6 +98,62 @@ const MainLayout: React.FC = () => {
   } = theme.useToken();
 
   const [collapsed, setCollapsed] = useState(false);
+  const [isAuthorized, setAuthorized] = useState(true);
+  const navigate = useNavigate();
+
+  const logout = async () => {
+    try {
+      const { headers, data, status } = await axios.post("/auth/jwt/logout");
+      checkAuthorized();
+    } catch (error) {
+      checkAuthorized();
+      if (axios.isAxiosError(error)) {
+        console.log("error: ", error);
+        return error.message;
+      } else {
+        console.log("unexpected error: ", error);
+        return "An unexpected error occurred";
+      }
+    }
+  };
+
+  useEffect(() => {
+    //will run at the component loading because array is empty, see second argument of useEffect
+    console.log("useEffect isAuthorized:", isAuthorized);
+
+    if (!isAuthorized) {
+      navigate("/login");
+    }
+    checkAuthorized();
+  }, [isAuthorized]);
+
+  // useEffect(() => {
+  //   console.log("useEffect [] isAuthorized:", isAuthorized);
+
+  //   if (!isAuthorized) {
+  //     navigate("/login");
+  //   }
+  //   checkAuthorized();
+  // }, []);
+
+  const checkAuthorized = async () => {
+    try {
+      const { headers, data } = await axios.get("/current_user");
+      console.log("success, user authorized: ", data);
+      setAuthorized(true);
+      // setAuthUser(data);
+    } catch (error) {
+      setAuthorized(false);
+      // setAuthUser("");
+      if (axios.isAxiosError(error)) {
+        console.log("error: ", error);
+        return error.message;
+      } else {
+        console.log("unexpected error: ", error);
+        return "An unexpected error";
+      }
+    }
+  };
 
   return (
     <Layout>
@@ -130,7 +194,10 @@ const MainLayout: React.FC = () => {
             </Badge>
           </div>
           <div>
-            <LogoutOutlined style={{ fontSize: "20px", color: "#08c" }} />
+            <LogoutOutlined
+              style={{ fontSize: "20px", color: "#08c" }}
+              onClick={logout}
+            />
           </div>
           <div>
             <SettingOutlined style={{ fontSize: "20px", color: "#08c" }} />
