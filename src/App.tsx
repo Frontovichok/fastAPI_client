@@ -1,62 +1,102 @@
-import React from "react";
 import "./App.css";
-import Board from "./components/Board";
 import Projects from "./components/Projects/Projects";
 import Project from "./components/Project/Project";
-import {
-  BrowserRouter,
-  createBrowserRouter,
-  Route,
-  RouterProvider,
-  Routes,
-} from "react-router-dom";
+import { createBrowserRouter, RouterProvider } from "react-router-dom";
 import ErrorPage from "./components/ErrorPage";
-import { SearchOutlined } from "@ant-design/icons";
 import MainLayout from "./components/MainLayout/MainLayout";
 import Task from "./components/Task";
-import Login from "./components/Login/Login";
-import LoginAntd from "./components/Login/LoginAntd";
-import RegisterAntd from "./components/Registration/Registration";
+import LoginAntd from "./features/auth/LoginAntd";
 import NewProject from "./components/Projects/NewProject/NewProject";
-import { ConfigProvider } from "antd";
-import ruRU from "antd/locale/ru_RU";
-
-const router = createBrowserRouter([
-  {
-    path: "/",
-    element: (
-      <div className="App">
-        <MainLayout />
-        {/* <div className="container">
-          <Projects />
-        </div> */}
-      </div>
-    ),
-    errorElement: <ErrorPage />,
-  },
-  // {
-  //   path: "project/:projectId",
-  //   element: <Project />,
-  // },
-]);
+import PrivateRoute from "./utils/PrivateRoute";
+import { useSelector } from "react-redux";
+import { selectCurrentUser } from "./features/auth/AuthSlice";
+import { useLazyUserDataQuery } from "./store/services/auth";
+import { Spin } from "antd";
+import ProfilePage from "./features/ProfilePage/ProfilePage";
 
 function App() {
-  return (
-    <React.StrictMode>
-      {/* <RouterProvider router={router} />
-       */}
+  // const navigate = useNavigate();
 
-      <ConfigProvider locale={ruRU}>
-        <BrowserRouter>
-          <Routes>
-            <Route path="/*" element={<MainLayout />} />
-            <Route path="/Login" element={<LoginAntd />} />
-            <Route path="/Register" element={<RegisterAntd />} />
-            <Route path="/task" element={<Task />} />
-          </Routes>
-        </BrowserRouter>
-      </ConfigProvider>
-    </React.StrictMode>
+  const router = createBrowserRouter([
+    {
+      path: "/",
+      element: <PrivateRoute />,
+      errorElement: <ErrorPage />,
+      children: [
+        {
+          path: "/",
+          element: <MainLayout />,
+          errorElement: <ErrorPage />,
+          children: [
+            {
+              path: "/",
+              element: <Projects />,
+              errorElement: <ErrorPage />,
+            },
+            {
+              path: "/profile",
+              element: <ProfilePage />,
+              errorElement: <ErrorPage />,
+            },
+            {
+              path: "/new_project",
+              element: <NewProject />,
+              errorElement: <ErrorPage />,
+            },
+            {
+              path: "/project/:projectId",
+              element: <Project />,
+              errorElement: <ErrorPage />,
+            },
+          ],
+        },
+      ],
+    },
+    {
+      path: "/login",
+      element: <LoginAntd />,
+      errorElement: <ErrorPage />,
+    },
+    {
+      path: "/task",
+      element: <Task />,
+      errorElement: <ErrorPage />,
+    },
+  ]);
+
+  const [getUserData] = useLazyUserDataQuery();
+  let [user, pending] = useSelector(selectCurrentUser);
+  console.log("user", user);
+  console.log("pending", pending);
+
+  const checkAuthData = () => {
+    console.log("check auth data");
+    getUserData()
+      .unwrap()
+      .then((data: any) => {
+        console.log("PrivateRoute data: ", data);
+      })
+      .catch(() => {
+        console.log("PrivateRoute catch");
+      })
+      .finally(() => {
+        console.log("PrivateRoute finally");
+      });
+  };
+  if (user === null && pending === false) {
+    checkAuthData();
+  }
+
+  return (
+    <>
+      {pending ? (
+        <Spin tip="Loading" size="large" style={{ marginTop: "100px" }}>
+          <div className="content" />
+        </Spin>
+      ) : (
+        <RouterProvider router={router} />
+      )}
+    </>
   );
 }
 

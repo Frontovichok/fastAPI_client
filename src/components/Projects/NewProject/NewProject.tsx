@@ -1,30 +1,18 @@
 import React, { useState } from "react";
 import "./NewProject.css";
 import "../../../index.css";
-import type { CascaderProps, UploadProps } from "antd";
+import type { UploadProps } from "antd";
 import {
-  AutoComplete,
   Button,
-  Cascader,
-  Checkbox,
-  Col,
   DatePicker,
   Form,
   Input,
-  InputNumber,
   Rate,
-  Row,
   Select,
-  Tag,
   Upload,
   message,
 } from "antd";
-import {
-  SyncOutlined,
-  TagOutlined,
-  TeamOutlined,
-  UploadOutlined,
-} from "@ant-design/icons";
+import { TagOutlined, UploadOutlined } from "@ant-design/icons";
 import locale from "antd/es/date-picker/locale/ru_RU";
 
 import "dayjs/locale/ru";
@@ -33,46 +21,46 @@ const { RangePicker } = DatePicker;
 
 const { Option } = Select;
 
-interface DataNodeType {
-  value: string;
-  label: string;
-  children?: DataNodeType[];
-}
+// interface DataNodeType {
+//   value: string;
+//   label: string;
+//   children?: DataNodeType[];
+// }
 
-const residences: CascaderProps<DataNodeType>["options"] = [
-  {
-    value: "zhejiang",
-    label: "Zhejiang",
-    children: [
-      {
-        value: "hangzhou",
-        label: "Hangzhou",
-        children: [
-          {
-            value: "xihu",
-            label: "West Lake",
-          },
-        ],
-      },
-    ],
-  },
-  {
-    value: "jiangsu",
-    label: "Jiangsu",
-    children: [
-      {
-        value: "nanjing",
-        label: "Nanjing",
-        children: [
-          {
-            value: "zhonghuamen",
-            label: "Zhong Hua Men",
-          },
-        ],
-      },
-    ],
-  },
-];
+// const residences: CascaderProps<DataNodeType>["options"] = [
+//   {
+//     value: "zhejiang",
+//     label: "Zhejiang",
+//     children: [
+//       {
+//         value: "hangzhou",
+//         label: "Hangzhou",
+//         children: [
+//           {
+//             value: "xihu",
+//             label: "West Lake",
+//           },
+//         ],
+//       },
+//     ],
+//   },
+//   {
+//     value: "jiangsu",
+//     label: "Jiangsu",
+//     children: [
+//       {
+//         value: "nanjing",
+//         label: "Nanjing",
+//         children: [
+//           {
+//             value: "zhonghuamen",
+//             label: "Zhong Hua Men",
+//           },
+//         ],
+//       },
+//     ],
+//   },
+// ];
 
 const formItemLayout = {
   labelCol: {
@@ -106,14 +94,14 @@ const NewProject: React.FC = () => {
     console.log("Получены значения формы: ", values);
   };
 
-  const prefixSelector = (
-    <Form.Item name="prefix" noStyle>
-      <Select style={{ width: 70 }}>
-        <Option value="86">+86</Option>
-        <Option value="87">+87</Option>
-      </Select>
-    </Form.Item>
-  );
+  // const prefixSelector = (
+  //   <Form.Item name="prefix" noStyle>
+  //     <Select style={{ width: 70 }}>
+  //       <Option value="86">+86</Option>
+  //       <Option value="87">+87</Option>
+  //     </Select>
+  //   </Form.Item>
+  // );
   const onUploadChange: UploadProps["onChange"] = (info) => {
     if (info.file.status !== "uploading") {
       console.log(info.file, info.fileList);
@@ -134,7 +122,7 @@ const NewProject: React.FC = () => {
   //   </Form.Item>
   // );
 
-  const [autoCompleteResult, setAutoCompleteResult] = useState<string[]>([]);
+  // const [autoCompleteResult, setAutoCompleteResult] = useState<string[]>([]);
 
   return (
     <Form

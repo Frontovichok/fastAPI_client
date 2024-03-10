@@ -1,6 +1,6 @@
 // interface PostContainerProps {
 
-import { postAPI } from "../services/PostService";
+import { postAPI } from "../store/services/post";
 import PostItem from "./PostItem";
 
 // }
@@ -11,7 +11,7 @@ const PostContainer2 = () => {
     <div className="post__list">
       {isLoading && <h1>Идет загрузка</h1>}
       {error && <h1>Не ругайся мана</h1>}
-      {posts && posts.map((post) => <PostItem key={post.id} post={post} />)}
+      {/* {posts && posts.map((post) => <PostItem key={post.id} post={post} />)} */}
     </div>
   );
 };

@@ -9,7 +9,6 @@ import {
   Table,
   Typography,
 } from "antd";
-import type { ColumnsType, TableProps } from "antd/es/table";
 
 interface Item {
   key: string;
@@ -155,7 +154,7 @@ const App: React.FC = () => {
       width: 250,
       editable: true,
       fixed: "left" as "left",
-      render: (text: string) => <a>{text}</a>,
+      render: (text: string) => <a href="/project">{text}</a>,
     },
     {
       title: "Тип сертификации",
@@ -246,14 +245,14 @@ const App: React.FC = () => {
           <>
             {editable ? (
               <span>
-                <Typography.Link
+                <Typography
                   onClick={() => save(record.key)}
                   style={{ marginRight: 8 }}
                 >
                   Save
-                </Typography.Link>
+                </Typography>
                 <Popconfirm title="Sure to cancel?" onConfirm={cancel}>
-                  <a>Cancel</a>
+                  <button>Cancel</button>
                 </Popconfirm>
               </span>
             ) : (
@@ -269,7 +268,7 @@ const App: React.FC = () => {
               title="Sure to delete?"
               onConfirm={() => handleDelete(record.key)}
             >
-              <a>Delete</a>
+              <button>Delete</button>
             </Popconfirm>
           </>
         );

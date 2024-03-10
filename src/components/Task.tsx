@@ -1,7 +1,4 @@
-import React from "react";
-import styled from "styled-components";
-
-function Task(props: any) {
+function Task() {
   return <p>Task</p>;
 }
 

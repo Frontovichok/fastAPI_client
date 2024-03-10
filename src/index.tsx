@@ -1,9 +1,10 @@
-import React from "react";
 import ReactDOM from "react-dom/client";
 import "./index.css";
-import AppTest from "./AppTest";
+import App from "./App";
 import { Provider } from "react-redux";
 import { setupStore } from "./store/store";
+import { ConfigProvider } from "antd";
+import ruRU from "antd/locale/ru_RU";
 
 const store = setupStore();
 
@@ -12,6 +13,8 @@ const root = ReactDOM.createRoot(
 );
 root.render(
   <Provider store={store}>
-    <AppTest />
+    <ConfigProvider locale={ruRU}>
+      <App />
+    </ConfigProvider>
   </Provider>
 );

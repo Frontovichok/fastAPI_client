@@ -1,17 +1,13 @@
-import React, { useEffect, useState } from "react";
+import React, { useState } from "react";
 import "../../index.css";
 import "./MainLayout.css";
 import {
   BellFilled,
-  BellOutlined,
   CalendarOutlined,
   DesktopOutlined,
   FileOutlined,
   HomeOutlined,
-  LaptopOutlined,
   LogoutOutlined,
-  MessageFilled,
-  NotificationOutlined,
   PieChartOutlined,
   SettingOutlined,
   TeamOutlined,
@@ -19,47 +15,13 @@ import {
 } from "@ant-design/icons";
 import type { MenuProps } from "antd";
 import { Avatar, Badge, Breadcrumb, Layout, Menu, theme } from "antd";
-import {
-  Link,
-  NavLink,
-  Navigate,
-  Route,
-  Routes,
-  useNavigate,
-} from "react-router-dom";
-import Projects from "../Projects/Projects";
-import Project from "../Project/Project";
-import NewProject from "../Projects/NewProject/NewProject";
-import axios from "axios";
+import { Link, NavLink, useNavigate } from "react-router-dom";
+import { Outlet } from "react-router-dom";
+import { selectCurrentUser } from "../../features/auth/AuthSlice";
+import { useSelector } from "react-redux";
+import { useLogoutMutation } from "../../store/services/auth";
+
 const { Header, Content, Sider } = Layout;
-
-// const items1: MenuProps["items"] = ["1", "2", "3"].map((key) => ({
-//   key,
-//   label: `nav ${key}`,
-// }));
-
-// const items2: MenuProps["items"] = [
-//   UserOutlined,
-//   LaptopOutlined,
-//   NotificationOutlined,
-// ].map((icon, index) => {
-//   const key = String(index + 1);
-
-//   return {
-//     key: `sub${key}`,
-//     icon: React.createElement(icon),
-//     label: `subnav ${key}`,
-
-//     children: new Array(4).fill(null).map((_, j) => {
-//       const subKey = index * 4 + j + 1;
-//       return {
-//         key: subKey,
-//         label: `option${subKey}`,
-//       };
-//     }),
-//   };
-// });
-
 type MenuItem = Required<MenuProps>["items"][number];
 
 function getItem(
@@ -96,64 +58,24 @@ const MainLayout: React.FC = () => {
   const {
     token: { colorBgContainer, borderRadiusLG },
   } = theme.useToken();
+  let [user] = useSelector(selectCurrentUser);
 
   const [collapsed, setCollapsed] = useState(false);
-  const [isAuthorized, setAuthorized] = useState(true);
   const navigate = useNavigate();
 
-  const logout = async () => {
-    try {
-      const { headers, data, status } = await axios.post("/auth/jwt/logout");
-      checkAuthorized();
-    } catch (error) {
-      checkAuthorized();
-      if (axios.isAxiosError(error)) {
-        console.log("error: ", error);
-        return error.message;
-      } else {
-        console.log("unexpected error: ", error);
-        return "An unexpected error occurred";
-      }
-    }
+  const [logout] = useLogoutMutation();
+
+  const handleLogout = async () => {
+    logout()
+      .then(() => {
+        console.log("logout function finished");
+      })
+      .finally(() => {
+        console.log("logout function finally");
+        navigate("/login");
+      });
   };
-
-  useEffect(() => {
-    //will run at the component loading because array is empty, see second argument of useEffect
-    console.log("useEffect isAuthorized:", isAuthorized);
-
-    if (!isAuthorized) {
-      navigate("/login");
-    }
-    checkAuthorized();
-  }, [isAuthorized]);
-
-  // useEffect(() => {
-  //   console.log("useEffect [] isAuthorized:", isAuthorized);
-
-  //   if (!isAuthorized) {
-  //     navigate("/login");
-  //   }
-  //   checkAuthorized();
-  // }, []);
-
-  const checkAuthorized = async () => {
-    try {
-      const { headers, data } = await axios.get("/current_user");
-      console.log("success, user authorized: ", data);
-      setAuthorized(true);
-      // setAuthUser(data);
-    } catch (error) {
-      setAuthorized(false);
-      // setAuthUser("");
-      if (axios.isAxiosError(error)) {
-        console.log("error: ", error);
-        return error.message;
-      } else {
-        console.log("unexpected error: ", error);
-        return "An unexpected error";
-      }
-    }
-  };
+  console.log("MainLayout.tsx");
 
   return (
     <Layout>
@@ -172,18 +94,22 @@ const MainLayout: React.FC = () => {
               <img
                 className="headerLogo"
                 src="https://play-lh.googleusercontent.com/ahJtMe0vfOlAu1XJVQ6rcaGrQBgtrEZQefHy7SXB7jpijKhu1Kkox90XDuH8RmcBOXNn"
+                alt="header logo"
               />
             </Link>
           </div>
         </div>
         <div className="headerRightButtons">
           <div>
-            <Link to="/login">
+            <Link to="/profile">
               <Badge count={1} size="small">
                 <Avatar shape="square" size="default">
                   <UserOutlined style={{ fontSize: "20px", color: "#08c" }} />
                 </Avatar>
               </Badge>
+              <span>
+                <span style={{ color: "#08c" }}>{user.username}</span>
+              </span>
             </Link>
           </div>
           <div>
@@ -196,7 +122,7 @@ const MainLayout: React.FC = () => {
           <div>
             <LogoutOutlined
               style={{ fontSize: "20px", color: "#08c" }}
-              onClick={logout}
+              onClick={handleLogout}
             />
           </div>
           <div>
@@ -249,12 +175,7 @@ const MainLayout: React.FC = () => {
               borderRadius: borderRadiusLG,
             }}
           >
-            <Routes>
-              <Route path="/" element={<Projects />} />
-              <Route path="/projects" element={<Projects />} />
-              <Route path="/new_project" element={<NewProject />} />
-              <Route path="/project/:projectId" element={<Project />} />
-            </Routes>
+            <Outlet />
           </Content>
         </Layout>
       </Layout>

@@ -34,12 +34,7 @@ function Column(props: any) {
           <Title {...provided.dragHandleProps}>{props.column.title}</Title>
           <TaskList>
             {props.tasks.map((task: any, index: number) => (
-              <Task
-                key={task.id}
-                task={task}
-                index={index}
-                columnId={props.column.id}
-              />
+              <Task />
             ))}
           </TaskList>
         </Container>

@@ -1,9 +1,9 @@
 import React, { useRef, useState } from "react";
 import "../../index.css";
 import "./Projects.css";
-import { cloneDeep, find } from "lodash";
-import * as _ from "lodash";
-import { PlusOutlined, SearchOutlined, SyncOutlined } from "@ant-design/icons";
+import { cloneDeep } from "lodash";
+// import * as _ from "lodash";
+import { PlusOutlined, SearchOutlined } from "@ant-design/icons";
 import {
   ConfigProvider,
   Form,
@@ -18,12 +18,7 @@ import {
   Tag,
   Tooltip,
 } from "antd";
-import type {
-  ColumnType,
-  ColumnGroupType,
-  ColumnsType,
-  TableProps,
-} from "antd/es/table";
+import type { ColumnType } from "antd/es/table";
 import type { InputRef } from "antd";
 import { Link, NavLink } from "react-router-dom";
 import type { FilterConfirmProps } from "antd/es/table/interface";
@@ -210,9 +205,9 @@ const App: React.FC = () => {
   const searchInput = useRef<InputRef>(null);
 
   const isEditing = (record: Item) => record.key === editingKey;
+  console.log("Projects.tsx ");
 
   const edit = (record: Partial<Item> & { key: React.Key }) => {
-    console.log("record:::: ", record);
     form.setFieldsValue({ ...record });
     setEditingKey(record.key);
   };
@@ -651,7 +646,7 @@ const App: React.FC = () => {
                   okText="Да"
                   cancelText="Отмена"
                 >
-                  <a>Отменить</a>
+                  <button>Отменить</button>
                 </Popconfirm>
               </span>
             ) : (
@@ -670,7 +665,7 @@ const App: React.FC = () => {
                 okText="Да"
                 cancelText="Отмена"
               >
-                <a>В архив</a>
+                <button>В архив</button>
               </Popconfirm>
               <Popconfirm
                 title="Подтверждаете удаление?"
@@ -678,7 +673,7 @@ const App: React.FC = () => {
                 okText="Да"
                 cancelText="Отмена"
               >
-                <a>Удалить</a>
+                <button>Удалить</button>
               </Popconfirm>
             </Space>
           </>
@@ -687,17 +682,17 @@ const App: React.FC = () => {
     },
   ];
 
-  const onChange: TableProps<Item>["onChange"] = (
-    pagination,
-    filters,
-    sorter,
-    extra
-  ) => {
-    console.log("params", pagination, filters, sorter, extra);
-  };
+  // const onChange: TableProps<Item>["onChange"] = (
+  //   pagination,
+  //   filters,
+  //   sorter,
+  //   extra
+  // ) => {
+  //   console.log("params", pagination, filters, sorter, extra);
+  // };
 
   const mergedColumns = columns.map((col: any) => {
-    console.log(col);
+    // console.log(col);
     // if (!col.key) {
     //   return col;
     // }
@@ -706,7 +701,6 @@ const App: React.FC = () => {
       return {
         ...col,
         onCell: (record: Item) => {
-          console.log("record: ", record);
           return {
             record,
             inputType: "text",

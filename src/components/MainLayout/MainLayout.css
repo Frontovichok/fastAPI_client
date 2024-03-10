@@ -16,14 +16,14 @@
   display: flex;
   justify-self: left;
   flex-direction: row;
-  justify-content: end;
+  justify-content: flex-end;
   align-items: center;
   gap: 25px;
 }
 .headerRightButtons {
   display: flex;
   flex-direction: row;
-  justify-content: end;
+  justify-content: flex-end;
   align-items: center;
   gap: 25px;
 }
