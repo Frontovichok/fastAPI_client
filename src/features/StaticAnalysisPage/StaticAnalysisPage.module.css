@@ -1,0 +1,51 @@
+.container {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+}
+.header_title {
+  margin-bottom: 20px;
+  margin-top: 10px;
+  text-align: left;
+  font-weight: 600;
+  font-size: 30px;
+}
+.analysis_container {
+  border-radius: 10px;
+  box-shadow: 1px 1px 15px 5px #e7e7e7;
+  display: flex;
+  flex-direction: column;
+  gap: 50px;
+  padding: 30px;
+  margin-bottom: 30px;
+}
+.analysis_title {
+  display: flex;
+  flex-direction: row;
+  gap: 10px;
+  align-items: center;
+  align-self: center;
+}
+.analysis_title h3 {
+  font-size: 1.3rem;
+}
+.logo {
+  max-height: 80px;
+  max-width: 200px;
+}
+.diff_files {
+  display: flex;
+  flex-direction: row;
+  gap: 100px;
+  align-self: center;
+  margin-bottom: 30px;
+}
+.select_project {
+  display: flex;
+  flex-direction: row;
+  gap: 15px;
+  align-items: center;
+}
+.dragger {
+  margin-bottom: 10px;
+}

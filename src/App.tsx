@@ -13,6 +13,7 @@ import { selectCurrentUser } from "./features/auth/AuthSlice";
 import { useLazyUserDataQuery } from "./store/services/auth";
 import { Spin } from "antd";
 import ProfilePage from "./features/ProfilePage/ProfilePage";
+import StaticAnalysisPage from "./features/StaticAnalysisPage/StaticAnalysisPage";
 
 function App() {
   // const navigate = useNavigate();
@@ -46,6 +47,16 @@ function App() {
             {
               path: "/project/:projectId",
               element: <Project />,
+              errorElement: <ErrorPage />,
+            },
+            {
+              path: "/static_analysis",
+              element: <StaticAnalysisPage />,
+              errorElement: <ErrorPage />,
+            },
+            {
+              path: "/dynamic_analysis",
+              element: <StaticAnalysisPage />,
               errorElement: <ErrorPage />,
             },
           ],

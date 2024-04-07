@@ -1,4 +1,4 @@
-import React, { useRef, useState } from "react";
+import React, { useEffect, useRef, useState } from "react";
 import "../../index.css";
 import "./Projects.css";
 import { cloneDeep } from "lodash";
@@ -646,7 +646,8 @@ const App: React.FC = () => {
                   okText="Да"
                   cancelText="Отмена"
                 >
-                  <button>Отменить</button>
+                  <Button type="text">Отменить</Button>
+                  {/* <Typography.Link>Отменить</Typography.Link> */}
                 </Popconfirm>
               </span>
             ) : (
@@ -665,7 +666,9 @@ const App: React.FC = () => {
                 okText="Да"
                 cancelText="Отмена"
               >
-                <button>В архив</button>
+                <Button type="text" danger>
+                  В архив
+                </Button>
               </Popconfirm>
               <Popconfirm
                 title="Подтверждаете удаление?"
@@ -673,7 +676,9 @@ const App: React.FC = () => {
                 okText="Да"
                 cancelText="Отмена"
               >
-                <button>Удалить</button>
+                <Button type="text" danger>
+                  Удалить
+                </Button>
               </Popconfirm>
             </Space>
           </>
@@ -719,11 +724,15 @@ const App: React.FC = () => {
       <Title level={2} className="projectsHeaderText">
         Активные проекты
       </Title>
+      {(() => {
+        console.log("projects render");
+      })()}
       <NavLink to="/new_project">
         <Button className="newProject" type="primary" icon={<PlusOutlined />}>
           Создать проект
         </Button>
       </NavLink>
+
       <ConfigProvider
         theme={{
           components: {

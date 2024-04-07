@@ -8,10 +8,12 @@
   height: auto;
   padding: 6px 15px;
 }
+.ant-table-cell a.ant-typography {
+  padding: 4px 15px;
+}
 .ant-dropdown-trigger.ant-table-filter-trigger .anticon.anticon-filter {
   color: white;
 }
-
 .ant-dropdown-trigger.ant-table-filter-trigger.active .anticon.anticon-filter {
   color: yellow;
 }

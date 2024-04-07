@@ -2,13 +2,17 @@ import React, { useState } from "react";
 import "../../index.css";
 import "./MainLayout.css";
 import {
+  AppstoreOutlined,
   BellFilled,
   CalendarOutlined,
-  DesktopOutlined,
+  DatabaseOutlined,
+  DeploymentUnitOutlined,
+  ExperimentOutlined,
+  FileDoneOutlined,
   FileOutlined,
   HomeOutlined,
   LogoutOutlined,
-  PieChartOutlined,
+  MergeCellsOutlined,
   SettingOutlined,
   TeamOutlined,
   UserOutlined,
@@ -20,6 +24,7 @@ import { Outlet } from "react-router-dom";
 import { selectCurrentUser } from "../../features/auth/AuthSlice";
 import { useSelector } from "react-redux";
 import { useLogoutMutation } from "../../store/services/auth";
+import Logo from "../Logo/Logo";
 
 const { Header, Content, Sider } = Layout;
 type MenuItem = Required<MenuProps>["items"][number];
@@ -39,18 +44,19 @@ function getItem(
 }
 
 const items: MenuItem[] = [
-  getItem("Активные проекты", "1", <PieChartOutlined />),
-  getItem("Архив", "2", <DesktopOutlined />),
-  getItem("User", "sub1", <UserOutlined />, [
-    getItem("Tom", "3"),
-    getItem("Bill", "4"),
-    getItem("Alex", "5"),
+  getItem("Мои проекты", "1", <AppstoreOutlined />),
+  getItem("Архив", "2", <DatabaseOutlined />),
+  getItem("Испытания", "sub1", <ExperimentOutlined />, [
+    getItem(
+      <NavLink to="/static_analysis">Статика</NavLink>,
+      "3",
+      <DeploymentUnitOutlined />
+    ),
+    getItem(<NavLink to="/dynamic_analysis">Динамика</NavLink>, "4", <MergeCellsOutlined />),
+    getItem(<NavLink to="/reports">Отчеты</NavLink>, "5", <FileDoneOutlined />),
   ]),
-  getItem("Team", "sub2", <TeamOutlined />, [
-    getItem("Team 1", "6"),
-    getItem("Team 2", "8"),
-  ]),
-  getItem("Планировщик", "9", <CalendarOutlined />),
+  getItem("Лаборатория", "sub2", <TeamOutlined />),
+  getItem("Календарь", "9", <CalendarOutlined />),
   getItem("Документы", "10", <FileOutlined />),
 ];
 
@@ -90,13 +96,7 @@ const MainLayout: React.FC = () => {
         /> */}
         <div className="headerLeftButtons">
           <div className="headerLogoContainer">
-            <Link to="/">
-              <img
-                className="headerLogo"
-                src="https://play-lh.googleusercontent.com/ahJtMe0vfOlAu1XJVQ6rcaGrQBgtrEZQefHy7SXB7jpijKhu1Kkox90XDuH8RmcBOXNn"
-                alt="header logo"
-              />
-            </Link>
+            <Logo />
           </div>
         </div>
         <div className="headerRightButtons">

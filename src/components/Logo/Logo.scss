@@ -1,0 +1,30 @@
+.content {
+  display: flex;
+  // height: 100%;
+}
+.link {
+  display: flex;
+  // flex-direction: column;
+  // justify-content: center;
+  // gap: 5px;
+  // // height: 100%;
+  // align-items: center;
+  padding: 5px 10px;
+}
+.text {
+  color: #16cbff;
+  font-family: Ubuntu, sans-serif;
+  font-size: 2.2rem;
+  font-weight: 700;
+  letter-spacing: 5px;
+  line-height: 2rem;
+  text-shadow: -1px 1px 0 #41a9ba, 1px 1px 0 #c63d2b, 1px -1px 0 #cd7200, -1px -1px 0 #001529;
+}
+// .text_slogan {
+//   font-size: .7rem;
+//   line-height: 1rem;
+//   color: #4f7da7;
+// }
+p {
+  margin: 0;
+}
