@@ -1,20 +1,27 @@
 import { useSelector } from "react-redux";
 import { selectCurrentUser } from "../auth/AuthSlice";
-import UnderstandLogo from "../../images/UnderstandLogoDark.webp";
-import BinarySearchLogo from "../../images/binary_search.png";
+import { SearchOutlined, LoadingOutlined } from "@ant-design/icons";
+import UnderstandImg from "../../images/UnderstandLogoDark.webp";
+import BinarySearchImg from "../../images/binary_search.png";
+import CompareImg from "../../images/compare.png";
 import styles from "./StaticAnalysisPage.module.css";
 import SelectProject from "../SelectProject/SelectProject";
 import UploadFile from "./UploadFile/UploadFile";
-import { Tabs } from "antd";
+import { Tabs, Button } from "antd";
+import axios from "axios";
+import { useState } from "react";
+import DiffTable from "./DiffTable/DiffTable";
 
 const AnalysePairUploads = (props: any) => {
+  console.log("props.analyze_request_link: ", props.analyze_request_link);
+  const [diffResult, setDiffResult] = useState();
   return (
     <div className={styles.analysis_container}>
       <div className={styles.analysis_title}>
         <img
           className={styles.logo}
-          src={UnderstandLogo}
-          alt="Understand Logo"
+          src={props.type === "understand" ? UnderstandImg : CompareImg}
+          alt="Logo"
         />
         <h3>{props.title}</h3>
       </div>
@@ -22,15 +29,64 @@ const AnalysePairUploads = (props: any) => {
         <div className={styles.diff_first_file}>
           <UploadFile
             action={"/file/upload_understand_new_file"}
-            fileType={props.firstFileType}
+            fileProps={props.firstFile}
           />
         </div>
         <div className={styles.diff_second_file}>
           <UploadFile
             action={"/file/upload_understand_old_file"}
-            fileType={props.secondFileType}
+            fileProps={props.secondFile}
           />
         </div>
+      </div>
+      <div className={styles.analyzeButtonContainer}>
+        {/* <LoadingOutlined /> */}
+        {/* <Button type="primary" disabled>
+          Проанализировать
+        </Button> */}
+        <Button
+          type="primary"
+          onClick={() => {
+            console.log("Click imitation of request. Start");
+            // setImitationResponseFinishedStatus(1);
+            axios
+              .get(props.analyze_request_link)
+              .then((response) => {
+                console.log(response);
+                console.log(response.data);
+                // console.log(JSON.parse(JSON.stringify(response.data)));
+                // console.log(response.text());
+                console.log("Success");
+                setDiffResult(response.data);
+                return response.data;
+              })
+              .catch(function (error) {
+                // handle error
+                console.log(error);
+              })
+              .finally(function () {
+                // always executed
+                console.log("finally");
+              });
+            console.log("Click imitation of request. End");
+          }}
+        >
+          Проанализировать
+        </Button>
+        {/* <Button type="primary" loading>
+          Анализируется
+        </Button>
+        <Button type="primary" iconPosition={"start"}>
+          Повторить анализ
+        </Button> */}
+      </div>
+      <div className={styles.resultContainer}>
+        {diffResult && (
+          <DiffTable
+            analyze_request_link={props.analyze_request_link}
+            diffData={diffResult}
+          />
+        )}
       </div>
     </div>
   );
@@ -42,7 +98,7 @@ const AnalyseSingleUpload = (props: any) => {
       <div className={styles.analysis_title}>
         <img
           className={styles.logo}
-          src={BinarySearchLogo}
+          src={BinarySearchImg}
           alt="Binary search"
         />
         <h3>{props.title}</h3>
@@ -51,7 +107,7 @@ const AnalyseSingleUpload = (props: any) => {
         <div className={styles.diff_first_file}>
           <UploadFile
             action={"/file/upload_sources_to_find_binary"}
-            fileType={props.fileType}
+            fileProps={props.file}
           />
         </div>
       </div>
@@ -101,25 +157,27 @@ const StaticAnalysisPage = () => {
         onChange={onChange}
         // type="card"
         items={[
-          {
-            label: "Сравнение избыточных файлов Understand",
-            key: "1",
-            children: (
-              <AnalysePairUploads
-                title="Сравнение избыточных файлов Understand "
-                firstFileType="txt"
-                secondFileType="txt"
-              />
-            ),
-          },
+          // {
+          //   label: "Сравнение избыточных файлов Understand",
+          //   key: "1",
+          //   children: (
+          //     <AnalysePairUploads
+          //       title="Сравнение избыточных файлов Understand "
+          //       firstFileType="txt"
+          //       secondFileType="txt"
+          //     />
+          //   ),
+          // },
           {
             label: "Сравнение избыточных функций Understand",
             key: "2",
             children: (
               <AnalysePairUploads
                 title="Сравнение избыточных функций Understand "
-                firstFileType="txt"
-                secondFileType="txt"
+                type="understand"
+                firstFile={{ type: "txt", text: "Старый отчет Understand" }}
+                secondFile={{ type: "txt", text: "Новый отчет Understand" }}
+                analyze_request_link="https://127.0.0.1:8001/compare_unused_functions"
               />
             ),
           },
@@ -129,49 +187,33 @@ const StaticAnalysisPage = () => {
             children: (
               <AnalysePairUploads
                 title="Сравнение КС файлов исходных текстов "
-                firstFileType="txt"
-                secondFileType="txt"
+                type="checksum"
+                firstFile={{ type: "txt", text: "Старый файл с КС" }}
+                secondFile={{ type: "txt", text: "Новый файл с КС" }}
+                analyze_request_link="https://127.0.0.1:8001/checksums"
               />
             ),
           },
-          {
-            label: "Выявление избыточных файлов по логу Strace",
-            key: "4",
-            children: (
-              <AnalysePairUploads
-                title="Выявление избыточных файлов по логу Strace "
-                firstFileType="txt"
-                secondFileType="zip"
-              />
-            ),
-          },
+          // {
+          //   label: "Выявление избыточных файлов по логу Strace",
+          //   key: "4",
+          //   children: (
+          //     <AnalysePairUploads
+          //       title="Выявление избыточных файлов по логу Strace "
+          //       firstFileType="txt"
+          //       secondFileType="zip"
+          //     />
+          //   ),
+          // },
           {
             label: `Выявление бинарных файлов в исходных текстах`,
             key: "5",
             children: (
               <AnalyseSingleUpload
                 title="Выявление бинарных файлов в исходных текстах "
-                fileType="zip"
-              />
-            ),
-          },
-          {
-            label: `Выявление заноз в жопе`,
-            key: "6",
-            children: (
-              <AnalyseSingleUpload
-                title="Выявление заноз в жопе "
-                fileType="zip"
-              />
-            ),
-          },
-          {
-            label: `Выявление трещин в жопе`,
-            key: "7",
-            children: (
-              <AnalyseSingleUpload
-                title="Выявление трещин в жопе "
-                fileType="zip"
+                type="binary_files"
+                file={{ type: "zip", text: "Архив с исходными текстами" }}
+                analyze_request_link="https://127.0.0.1:8001/analyze_sources"
               />
             ),
           },

@@ -37,13 +37,13 @@ const UploadFile = (props: any) => {
   return (
     <Dragger action={props.action} {...uploadProps}>
       <p className="ant-upload-drag-icon">
-        {props.fileType === "txt" && <FileAddOutlined />}
-        {props.fileType === "zip" && <FileZipOutlined />}
+        {props.fileProps.type === "txt" && <FileAddOutlined />}
+        {props.fileProps.type === "zip" && <FileZipOutlined />}
       </p>
       <p className="ant-upload-text">
-        Выберите или перетащите старый отчет Understand
+      {props.fileProps.text}
       </p>
-      <p className="ant-upload-hint">Расширение файла - {props.fileType}</p>
+      <p className="ant-upload-hint">Расширение файла - {props.fileProps.type}</p>
     </Dragger>
   );
 };

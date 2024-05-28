@@ -38,7 +38,7 @@
   flex-direction: row;
   gap: 100px;
   align-self: center;
-  margin-bottom: 30px;
+  /* margin-bottom: 30px; */
 }
 .select_project {
   display: flex;
@@ -48,4 +48,11 @@
 }
 .dragger {
   margin-bottom: 10px;
+}
+.analyzeButtonContainer {
+  margin: auto;
+}
+.resultContainer {
+  padding: 20px;
+  border-radius: 5px;
 }

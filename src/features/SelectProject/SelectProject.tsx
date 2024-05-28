@@ -25,16 +25,16 @@ const SelectProject: React.FC = () => (
     filterOption={filterOption}
     options={[
       {
-        value: "jack",
-        label: "Залупа 1",
+        value: "one",
+        label: "ПТК 1",
       },
       {
-        value: "lucy",
-        label: "Залупа 2",
+        value: "two",
+        label: "ПТК 2",
       },
       {
-        value: "tom",
-        label: "Залупа 3",
+        value: "three",
+        label: "ПТК 3",
       },
     ]}
   />

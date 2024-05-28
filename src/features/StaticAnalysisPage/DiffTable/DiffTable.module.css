@@ -1,0 +1,46 @@
+.tableContainer {
+  border: 1px solid #f2f2f2;
+  padding: 20px;
+  border-radius: 10px;
+  height: 600px;
+  overflow: auto;
+}
+.tableContainer table {
+  border-spacing: 0; /* Removes the cell spacing via CSS */
+  border-collapse: collapse; /* Optional - if you don't want to have double border where cells touch */
+  width: 100%;
+}
+.row {
+  border: 1px solid #dfdfdf;
+}
+.row td {
+  padding: 8px 20px;
+}
+.greenRow {
+  background-color: #8bd79f;
+}
+.redRow {
+  background-color: #eb9696;
+}
+.table {
+  width: 100%;
+}
+.indexColumn {
+  width: 7%;
+}
+.sectionRow {
+  /* border-top: 2px solid black; */
+  color: #545454;
+  font-size: 1rem;
+  font-weight: bold;
+  text-align: center;
+  background: whitesmoke;
+}
+.tableHeader {
+  background: #dfdfdf;
+  border: 1px solid #dfdfdf;
+  text-align: left;
+}
+.tableHeader th {
+  padding: 10px 20px;
+}
