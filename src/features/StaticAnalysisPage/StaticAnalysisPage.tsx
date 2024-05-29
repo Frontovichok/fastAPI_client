@@ -11,6 +11,7 @@ import { Tabs, Button } from "antd";
 import axios from "axios";
 import { useState } from "react";
 import DiffTable from "./DiffTable/DiffTable";
+import BinaryAnalysisDataCharts from "./BinaryAnalysisDataCharts/BinaryAnalysisDataCharts";
 
 const AnalysePairUploads = (props: any) => {
   console.log("props.analyze_request_link: ", props.analyze_request_link);
@@ -40,32 +41,22 @@ const AnalysePairUploads = (props: any) => {
         </div>
       </div>
       <div className={styles.analyzeButtonContainer}>
-        {/* <LoadingOutlined /> */}
-        {/* <Button type="primary" disabled>
-          Проанализировать
-        </Button> */}
         <Button
           type="primary"
           onClick={() => {
             console.log("Click imitation of request. Start");
-            // setImitationResponseFinishedStatus(1);
             axios
               .get(props.analyze_request_link)
               .then((response) => {
                 console.log(response);
                 console.log(response.data);
-                // console.log(JSON.parse(JSON.stringify(response.data)));
-                // console.log(response.text());
-                console.log("Success");
                 setDiffResult(response.data);
                 return response.data;
               })
               .catch(function (error) {
-                // handle error
                 console.log(error);
               })
               .finally(function () {
-                // always executed
                 console.log("finally");
               });
             console.log("Click imitation of request. End");
@@ -73,12 +64,6 @@ const AnalysePairUploads = (props: any) => {
         >
           Проанализировать
         </Button>
-        {/* <Button type="primary" loading>
-          Анализируется
-        </Button>
-        <Button type="primary" iconPosition={"start"}>
-          Повторить анализ
-        </Button> */}
       </div>
       <div className={styles.resultContainer}>
         {diffResult && (
@@ -93,6 +78,7 @@ const AnalysePairUploads = (props: any) => {
 };
 
 const AnalyseSingleUpload = (props: any) => {
+  const [analyseResult, setAnalyseResult] = useState();
   return (
     <div className={styles.analysis_container}>
       <div className={styles.analysis_title}>
@@ -110,6 +96,42 @@ const AnalyseSingleUpload = (props: any) => {
             fileProps={props.file}
           />
         </div>
+      </div>
+      <div className={styles.analyzeButtonContainer}>
+        <Button
+          type="primary"
+          onClick={() => {
+            console.log("Click imitation of request. Start");
+            axios
+              .get(props.analyze_request_link)
+              .then((response) => {
+                console.log(response);
+                console.log(response.data);
+                setAnalyseResult(response.data);
+                return response.data;
+              })
+              .catch(function (error) {
+                console.log(error);
+              })
+              .finally(function () {
+                console.log("finally");
+              });
+            console.log("Click imitation of request. End");
+          }}
+        >
+          Проанализировать
+        </Button>
+      </div>
+      <div className={styles.resultContainer}>
+        {analyseResult && (
+          <div>
+            <BinaryAnalysisDataCharts diffData={analyseResult} />
+            <DiffTable
+              analyze_request_link={props.analyze_request_link}
+              diffData={analyseResult}
+            />
+          </div>
+        )}
       </div>
     </div>
   );
@@ -194,17 +216,6 @@ const StaticAnalysisPage = () => {
               />
             ),
           },
-          // {
-          //   label: "Выявление избыточных файлов по логу Strace",
-          //   key: "4",
-          //   children: (
-          //     <AnalysePairUploads
-          //       title="Выявление избыточных файлов по логу Strace "
-          //       firstFileType="txt"
-          //       secondFileType="zip"
-          //     />
-          //   ),
-          // },
           {
             label: `Выявление бинарных файлов в исходных текстах`,
             key: "5",

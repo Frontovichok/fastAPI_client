@@ -18,7 +18,7 @@ const filterOption = (
 const SelectProject: React.FC = () => (
   <Select
     showSearch
-    placeholder="ПТК Залупа"
+    placeholder="ПТК 1"
     optionFilterProp="children"
     onChange={onChange}
     onSearch={onSearch}

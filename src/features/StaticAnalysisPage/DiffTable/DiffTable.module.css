@@ -16,10 +16,10 @@
 .row td {
   padding: 8px 20px;
 }
-.greenRow {
+.greenBg {
   background-color: #8bd79f;
 }
-.redRow {
+.redBg {
   background-color: #eb9696;
 }
 .table {
@@ -37,9 +37,11 @@
   background: whitesmoke;
 }
 .tableHeader {
-  background: #dfdfdf;
+  /* background: #dfdfdf; */
+  background: #1677ff;
   border: 1px solid #dfdfdf;
   text-align: left;
+  color: white;
 }
 .tableHeader th {
   padding: 10px 20px;
