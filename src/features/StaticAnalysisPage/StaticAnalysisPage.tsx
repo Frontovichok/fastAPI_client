@@ -12,6 +12,7 @@ import axios from "axios";
 import { useState } from "react";
 import DiffTable from "./DiffTable/DiffTable";
 import BinaryAnalysisDataCharts from "./BinaryAnalysisDataCharts/BinaryAnalysisDataCharts";
+import ChoiceChecksumType from "./RadioChecksumsType/RadioChecksumsType";
 
 const AnalysePairUploads = (props: any) => {
   console.log("props.analyze_request_link: ", props.analyze_request_link);
@@ -26,6 +27,7 @@ const AnalysePairUploads = (props: any) => {
         />
         <h3>{props.title}</h3>
       </div>
+      <>{props.type === "checksum" && <ChoiceChecksumType />}</>
       <div className={styles.diff_files}>
         <div className={styles.diff_first_file}>
           <UploadFile
